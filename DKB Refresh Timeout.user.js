@@ -19,6 +19,11 @@
 (function() {
   'use strict';
 
+
+  // --------------------------------------------------------------------------- //
+  // Settings                                                                    //
+  // --------------------------------------------------------------------------- //
+
   // Hier kann die maximale Loginzeit in Minuten festgelegt werden. Reset benötigt echten Seitenrefresh!
   var maxLoginTime  = 240;
   // Oberer Grenzwert in Sekunden. Frühstmöglicher Zeitpunkt zum Rücksetzten des 5 Minuten Timers
@@ -27,6 +32,11 @@
   var cdLimitMin    = 35;
   // Hier kann die Textausgabe im Konsolenfenster aktiviert werden (true / false)var
   var logState    = true;
+
+
+  // --------------------------------------------------------------------------- //
+  // Variables
+  // --------------------------------------------------------------------------- //
 
   // Zufällig ermittelter Wert zwischen [cdLimitMax] und [cdLimitMin].
   // Unterschreitet der "5 Minuten Logout Countdown" diesen Wert wird dieser zurückgesetzt
@@ -70,8 +80,15 @@
     setValues();
   }
 
-  // Funktion 'setValues()' wird nach jedem Sart des Skripts sowie nach jedem
-  // Rücksetzen des 5 Minuten Countdowns ausgeführt
+
+  // --------------------------------------------------------------------------- //
+  // Local funtions                                                              //
+  // --------------------------------------------------------------------------- //
+
+  /**
+   * Wird nach jedem Start des Skripts, sowie nach jedem Rücksetzen des
+   * 5-Minuten Countdowns ausgeführt.
+   */
   function setValues() {
     // Ermitteln der Zufallszahl zwischen [cdLimitMax] und [cdLimitMin]
     cdLimit = Math.floor(Math.random() * (cdLimitMax - cdLimitMin + 1)) + cdLimitMin;
@@ -89,8 +106,11 @@
     }
   } //'setValues()'
 
-  // Funktion zum akualieren des von uns eingefügten Logout Timers.
-  // Bei Ablauf erfolgt Logout!
+
+  /**
+   * Aktualisiert den neu eingeführten, verlängerten Logout Timer.
+   * Bei Ablauf erfolgt Logout!
+   */
   function updateCD() {
     // vergangene Millisekunden seit Skriptstart
     var millisPassed = Date.now() - starttime;
@@ -118,8 +138,12 @@
     }
   }
 
-  // Die Funktion 'checkSessionTimerUpdate()' wird durch den in
-  // 'setValues()' gestarteten Intervall regelmäsßig ausgeführt
+
+  /**
+   * Prüft den Countdown-Stand des originalen Countdownzählers.
+   * Ruft 'setValues()' auf, wenn dieser geringer ist als das berechnete
+   * Limit.
+   */
   function checkOriginalTimer() {
     // Der Inhalt des HTML Elements, welches den Wert des "5 Minuten Logout Countdowns" enhält wird ausgelesen
     //var text = htmlElement.innerHTML;
@@ -157,7 +181,13 @@
     }
   }
 
-  // Funktion um einstelligen Zahlenwerten eine führende '0' zu verpassen
+
+  /**
+   * Fügt einstelligen Zahlenwerten eine führende '0' hinzu.
+   *
+   * @param {string} value: Die zu prüfende Zahl.
+   * @returns {string} der übergebene 'value' mit evtl. vorangestellter 0
+   */
   function leadingZero(value) {
     // Rückgabe als Text und mit führender 0 falls [value] kleiner 10
     return (value < 10 ? '0' : '' ) + parseInt(value);
